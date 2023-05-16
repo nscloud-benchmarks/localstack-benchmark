@@ -1,4 +1,4 @@
-name: Build Benchmark
+name: Novu Benchmark
 on:
   push:
   workflow_dispatch:
@@ -14,6 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
+          repository: ${{ github.repository }}/targets/novu
           submodules: recursive
 
       - uses: docker/setup-buildx-action@v2
