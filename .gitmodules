@@ -4,6 +4,3 @@
 [submodule "targets/posthog"]
 	path = targets/posthog
 	url = https://github.com/PostHog/posthog.git
-[submodule "targets/sentry"]
-	path = targets/sentry
-	url = https://github.com/getsentry/sentry.git
