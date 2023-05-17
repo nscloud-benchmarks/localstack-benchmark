@@ -3,7 +3,7 @@ name: Upstream Sync
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 3 * * *" # daily at 3am
+    - cron: "0 2 * * *" # daily at 2am
 
 jobs:
   sync:
