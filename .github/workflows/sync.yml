@@ -31,3 +31,4 @@ jobs:
         run: |
           git add .
           git commit -m "Sync target upstreams"
+          git push origin main
