@@ -4,6 +4,6 @@
 [submodule "targets/posthog"]
 	path = targets/posthog
 	url = https://github.com/PostHog/posthog.git
-[submodule "localstack"]
-	path = localstack
+[submodule "targets/localstack"]
+	path = targets/localstack
 	url = https://github.com/localstack/localstack.git
