@@ -16,6 +16,8 @@ jobs:
 
       - run: git submodule update --init targets/localstack
 
+      - uses: docker/setup-qemu-action@v2
+
       - uses: docker/setup-buildx-action@v2
 
       - name: Multi-arch build
