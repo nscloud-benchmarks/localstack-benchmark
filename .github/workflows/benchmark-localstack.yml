@@ -16,14 +16,12 @@ jobs:
 
       - run: git submodule update --init targets/localstack
 
-      - uses: docker/setup-qemu-action@v2
-
       - uses: docker/setup-buildx-action@v2
 
-      - name: Multi-arch build
+      - name: Docker build
         run: |
           cd targets/localstack
-          make docker-build-multiarch
+          make docker-build
 
   nsc-build:
     name: Build with Namespace
@@ -37,7 +35,7 @@ jobs:
 
       - uses: namespacelabs/nscloud-setup-buildx-action@v0
 
-      - name: Multi-arch build
+      - name: Docker build
         run: |
           cd targets/localstack
-          make docker-build-multiarch
+          make docker-build
