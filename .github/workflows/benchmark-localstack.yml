@@ -10,7 +10,7 @@ permissions:
 jobs:
   docker-build:
     name: Build with Docker
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
 
@@ -27,7 +27,7 @@ jobs:
 
   nsc-build:
     name: Build with Namespace
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v3
 
