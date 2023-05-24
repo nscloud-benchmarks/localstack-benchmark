@@ -21,7 +21,14 @@ jobs:
       - name: Docker build
         run: |
           cd targets/localstack
-          make docker-build
+          docker buildx build \
+            --cache-from localstack/localstack --build-arg BUILDKIT_INLINE_CACHE=1 \
+            --build-arg LOCALSTACK_PRE_RELEASE=$(cat localstack/__init__.py | grep '^__version__ =' | grep -v '.dev' >> /dev/null && echo "0" || echo "1") \
+		        --build-arg LOCALSTACK_BUILD_GIT_HASH=$(git rev-parse --short HEAD) \
+		        --build-arg=LOCALSTACK_BUILD_DATE=$(date -u +"%Y-%m-%d") \
+            --build-arg=LOCALSTACK_BUILD_VERSION=$(cat localstack/__init__.py | grep '^__version__ =' | sed "s/__version__ = ['\"]\(.*\)['\"].*/\1/") \
+		        --add-host="localhost.localdomain:127.0.0.1" \
+		        -t localstack/localstack . -f ./Dockerfile
 
   nsc-build:
     name: Build with Namespace
@@ -38,4 +45,10 @@ jobs:
       - name: Docker build
         run: |
           cd targets/localstack
-          make docker-build
+          docker buildx build \
+            --build-arg LOCALSTACK_PRE_RELEASE=$(cat localstack/__init__.py | grep '^__version__ =' | grep -v '.dev' >> /dev/null && echo "0" || echo "1") \
+		        --build-arg LOCALSTACK_BUILD_GIT_HASH=$(git rev-parse --short HEAD) \
+		        --build-arg=LOCALSTACK_BUILD_DATE=$(date -u +"%Y-%m-%d") \
+            --build-arg=LOCALSTACK_BUILD_VERSION=$(cat localstack/__init__.py | grep '^__version__ =' | sed "s/__version__ = ['\"]\(.*\)['\"].*/\1/") \
+		        --add-host="localhost.localdomain:127.0.0.1" \
+		        -t localstack/localstack . -f ./Dockerfile
