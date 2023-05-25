@@ -21,6 +21,10 @@ jobs:
       - name: Docker build
         run: |
           cd localstack
+
+          # Skip --load for fairness with Namespace build.
+          export DOCKER_BUILD_FLAGS=""
+          
           make docker-build
 
   nsc-build:
