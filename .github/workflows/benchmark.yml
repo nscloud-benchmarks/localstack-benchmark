@@ -43,7 +43,9 @@ jobs:
       - uses: namespacelabs/nscloud-setup-buildx-action@v0
 
       - name: spoil local dir
-        run: echo "foo" > ./tmp-bar
+        run: |
+          echo "foo" > ./tmp-bar
+          sed -i 's/RUN make entrypoints/RUN make entrypoints && echo foo/g' ./Dockerfile
 
       - name: Docker build
         run: |
