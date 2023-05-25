@@ -44,8 +44,8 @@ jobs:
 
       - name: spoil local dir
         run: |
-          echo "foo" > ./tmp-bar
-          sed -i 's/RUN make entrypoints/RUN make entrypoints && echo foo/g' ./Dockerfile
+          echo "foo" > ./localstack/tmp-bar
+          sed -i 's/RUN make entrypoints/RUN make entrypoints && echo foo/g' ./localstack/Dockerfile
 
       - name: Docker build
         run: |
