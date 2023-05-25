@@ -22,6 +22,9 @@ jobs:
         run: |
           cd localstack
 
+          # Ensure exclusive cache access for apt and pip
+          sed -i 's/--mount=type=cache/--mount=type=cache,sharing=locked/g' ./Dockerfile
+
           # Skip --load for fairness with Namespace build.
           export DOCKER_BUILD_FLAGS=""
           
@@ -42,6 +45,9 @@ jobs:
       - name: Docker build
         run: |
           cd localstack
+
+          # Ensure exclusive cache access for apt and pip
+          sed -i 's/--mount=type=cache/--mount=type=cache,sharing=locked/g' ./Dockerfile
 
           # Based on `make docker-build` but use default build cache (in remote builder)
           docker buildx build \
