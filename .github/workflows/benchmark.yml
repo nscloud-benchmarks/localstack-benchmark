@@ -42,6 +42,11 @@ jobs:
 
       - uses: namespacelabs/nscloud-setup-buildx-action@v0
 
+      - name: Enable Buildkit debug logs
+        run: |
+          echo "debug = true" > /etc/buildkitd.toml
+          docker buildx create remote-nsc --config=/etc/buildkitd.toml
+
       - name: Docker build
         run: |
           cd localstack
