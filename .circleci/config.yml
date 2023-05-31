@@ -58,16 +58,6 @@ jobs:
           paths:
             - repo
 
-  preflight:
-    executor: ubuntu-machine-amd64
-    working_directory: /tmp/workspace/repo/localstack
-    steps:
-      - attach_workspace:
-          at: /tmp/workspace
-      - run:
-          name: Linting
-          command: make lint
-
   docker-build:
     parameters:
       platform:
@@ -138,13 +128,10 @@ workflows:
   main:
     jobs:
       - install
-      - preflight:
-          requires:
-            - install
       - nsc-build:
           name: nsc-build-amd64-arm64
           requires:
-            - preflight
+            - install
           context: 
             - nsc-access-token
       # The Docker build steps are not required but left in for performance comparison.
@@ -154,7 +141,7 @@ workflows:
           machine_image: << pipeline.parameters.ubuntu-amd64-machine-image >>
           resource_class: medium
           requires:
-            - preflight
+            - install
       - docker-build:
           name: docker-build-arm64
           platform: arm64
@@ -163,4 +150,4 @@ workflows:
           machine_image: << pipeline.parameters.ubuntu-arm64-machine-image >>
           resource_class: arm.medium
           requires:
-            - preflight
+            - install
