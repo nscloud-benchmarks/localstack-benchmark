@@ -9,6 +9,9 @@ permissions:
 
 jobs:
   docker-build:
+    strategy:
+      matrix:
+        platform: [amd64, arm64]
     name: Build with Docker
     runs-on: ubuntu-22.04
     steps:
@@ -26,7 +29,7 @@ jobs:
           sed -i 's/--mount=type=cache/--mount=type=cache,sharing=locked/g' ./Dockerfile
 
           # Skip --load for fairness with Namespace build.
-          export DOCKER_BUILD_FLAGS=""
+          export DOCKER_BUILD_FLAGS="--platform linux/${{ matrix.platform }}"
 
           make docker-build
 
@@ -56,4 +59,4 @@ jobs:
             --build-arg=LOCALSTACK_BUILD_DATE=$(date -u +"%Y-%m-%d") \
             --build-arg=LOCALSTACK_BUILD_VERSION=$(cat localstack/__init__.py | grep '^__version__ =' | sed "s/__version__ = ['\"]\(.*\)['\"].*/\1/") \
             --add-host="localhost.localdomain:127.0.0.1" \
-            -t localstack/localstack . -f ./Dockerfile
+            -t localstack/localstack --platform linux/amd64,linux/arm64 . -f ./Dockerfile
