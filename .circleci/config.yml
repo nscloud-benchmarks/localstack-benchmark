@@ -97,14 +97,6 @@ jobs:
             sed -i 's/--mount=type=cache/--mount=type=cache,sharing=locked/g' ./Dockerfile
   
             make docker-build
-      - run:
-          name: Save docker image
-          command: PLATFORM="<< parameters.platform >>" make docker-save-image
-      - persist_to_workspace:
-          root:
-            /tmp/workspace
-          paths:
-            - repo/target/
 
   nsc-build:
     executor: ubuntu-machine-amd64
@@ -129,9 +121,6 @@ jobs:
           environment:
             DOCKER_BUILD_FLAGS: "--platform linux/amd64,linux/arm64"
           command: |
-            nsc docker-login --output_registry_to=registry.txt
-            REGISTRY=`cat registry.txt`
-
             # Ensure exclusive cache access for apt and pip
             sed -i 's/--mount=type=cache/--mount=type=cache,sharing=locked/g' ./Dockerfile
 
@@ -142,7 +131,7 @@ jobs:
               --build-arg=LOCALSTACK_BUILD_DATE=$(date -u +"%Y-%m-%d") \
               --build-arg=LOCALSTACK_BUILD_VERSION=$(cat localstack/__init__.py | grep '^__version__ =' | sed "s/__version__ = ['\"]\(.*\)['\"].*/\1/") \
               --add-host="localhost.localdomain:127.0.0.1" \
-              -t $REGISTRY/localstack/localstack . -f ./Dockerfile
+              -t localstack/localstack . -f ./Dockerfile
 
 
 workflows:
