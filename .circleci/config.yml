@@ -105,7 +105,11 @@ jobs:
       - install-nsc
       - run:
           name: Install nsc remote builder
-          command: nsc docker buildx setup --background --use
+          command: |
+            # Log into Namespace Cloud workspace
+            nsc auth exchange-circleci-token
+
+            nsc docker buildx setup --background --use
       - run:
           name: Build community docker image
           environment:
@@ -132,8 +136,6 @@ workflows:
           name: nsc-build-amd64-arm64
           requires:
             - install
-          context: 
-            - nsc-access-token
       # The Docker build steps are not required but left in for performance comparison.
       - docker-build:
           name: docker-build-amd64
