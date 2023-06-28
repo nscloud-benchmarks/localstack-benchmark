@@ -10,6 +10,7 @@ jobs:
     name: Upstream Sync
     runs-on: nscloud
     concurrency: sync_upstream
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v3
         with:
