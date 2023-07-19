@@ -9,7 +9,9 @@ jobs:
   sync:
     name: Upstream Sync
     runs-on: nscloud
-    concurrency: sync_upstream
+    concurrency: 
+      group: sync_upstream
+      cancel-in-progress: true
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v3
