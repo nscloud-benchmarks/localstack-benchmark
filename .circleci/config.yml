@@ -14,13 +14,15 @@ executors:
       image: << pipeline.parameters.ubuntu-amd64-machine-image >>
 
 commands:
-  install-nsc:
+  setup-nsc:
     steps:
       - run: 
           name: Install latest nsc
           command: |
             curl -H 'CI: true' -fsSL https://get.namespace.so/cloud/install.sh | NS_ROOT=/tmp/nsc sh
             echo 'export PATH="/tmp/nsc/bin:$PATH"' >> "$BASH_ENV" && source "$BASH_ENV"
+
+            nsc auth exchange-circleci-token
 
 jobs:
   install:
@@ -106,13 +108,10 @@ jobs:
 
             docker buildx version
 
-      - install-nsc
+      - setup-nsc
       - run:
           name: Install nsc remote builder
           command: |
-            # Log into Namespace Cloud workspace
-            nsc auth exchange-circleci-token
-
             nsc docker buildx setup --background --use
       - run:
           name: Build community docker image
