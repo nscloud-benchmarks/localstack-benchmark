@@ -98,9 +98,13 @@ jobs:
           # CircleCI packages an old buildx version that does not support remote buildx drivers. 
           name: update buildx
           command: |
+            docker buildx version
+
             mkdir -p ~/.docker/cli-plugins
             wget -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.10.4/buildx-v0.10.4.linux-amd64
             chmod +x ~/.docker/cli-plugins/docker-buildx
+
+            docker buildx version
 
       - install-nsc
       - run:
